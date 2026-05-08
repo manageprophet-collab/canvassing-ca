@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/", "dest": "/canvassing-ca.html" },
+    { "src": "/upload", "dest": "/canvassing-upload.html" },
+    { "src": "/admin", "dest": "/canvassing-upload.html" }
+  ]
+}
