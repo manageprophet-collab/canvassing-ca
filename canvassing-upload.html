@@ -304,6 +304,19 @@ async function submitLead() {
       hourLeads++;
       updateStats();
       renderLeads();
+      // Blast all brokers via Twilio SMS
+fetch('https://canvassing-alerts-5223.twil.io/welcome', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: new URLSearchParams({
+    insurance_type: lead.insurance_type,
+    postal_code: lead.postal_code,
+    best_call_time: lead.best_call_time,
+    renewal_date: lead.renewal_date,
+    current_provider: lead.current_provider,
+    final_price: lead.final_price
+  })
+});
       showSuccess(lead);
       resetForm();
 
