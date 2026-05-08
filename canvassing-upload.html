@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://ovnlxwgsfugizxonhpci.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_ItaBNuxbJ7V_vTYj85OIAA_VLkay7Mw';
+  const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+</script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -270,27 +276,60 @@
     return true;
   }
 
-  function submitLead(){
-    if(!validate())return;
-    const lead={
-      id:Date.now(),
-      name:document.getElementById('leadName').value.trim(),
-      phone:document.getElementById('leadPhone').value.trim(),
-      email:document.getElementById('leadEmail').value.trim(),
-      postal:document.getElementById('leadPostal').value.trim().toUpperCase(),
-      insType:selectedInsType,
-      provider:document.getElementById('providerOther').value.trim()||selectedProvider||'Unknown',
-      renewal:selectedRenewal||'Not specified',
-      callTime:selectedTime,
-      notes:document.getElementById('leadNotes').value.trim(),
-      status:'live'
+async function submitLead() {
+    if (!validate()) return;
+
+    const lead = {
+      name: document.getElementById('leadName').value.trim(),
+      phone: document.getElementById('leadPhone').value.trim(),
+      email: document.getElementById('leadEmail').value.trim(),
+      postal_code: document.getElementById('leadPostal').value.trim().toUpperCase(),
+      insurance_type: selectedInsType,
+      current_provider: document.getElementById('providerOther').value.trim() || selectedProvider || 'Unknown',
+      renewal_date: selectedRenewal || 'Not specified',
+      best_call_time: selectedTime,
+      notes: document.getElementById('leadNotes').value.trim(),
+      final_price: calculatePrice(selectedInsType, selectedRenewal),
+      status: 'available'
     };
-    leadsToday.unshift(lead);
-    hourLeads++;
-    updateStats();
-    renderLeads();
-    showSuccess(lead);
-    resetForm();
+
+    try {
+      const { data, error } = await _sb
+        .from('leads')
+        .insert([lead]);
+
+      if (error) throw error;
+
+      leadsToday.unshift({...lead, id: Date.now()});
+      hourLeads++;
+      updateStats();
+      renderLeads();
+      showSuccess(lead);
+      resetForm();
+
+    } catch (error) {
+      alert('Failed to post lead: ' + error.message);
+    }
+  }
+
+  function calculatePrice(insType, renewal) {
+    const basePrices = {
+      'Home Insurance': 40,
+      'Auto Insurance': 35,
+      'Life Insurance': 55,
+      'Bundle — Home + Auto': 65
+    };
+    const renewalPremiums = {
+      'Already shopping': 30,
+      'Within 30 days': 25,
+      '1–3 months': 15,
+      '3–6 months': 10,
+      '6–12 months': 0,
+      'Not sure': 5
+    };
+    let price = basePrices[insType] || 40;
+    price += renewalPremiums[renewal] || 0;
+    return price;
   }
 
   function updateStats(){
