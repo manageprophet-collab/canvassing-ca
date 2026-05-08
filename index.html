@@ -3456,14 +3456,55 @@
     input.value = '';
   }
 
-  function completeSignup() {
-    const name = document.getElementById('inName').value || 'John Smith';
-    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+ async function completeSignup() {
+  const name = document.getElementById('inName').value.trim();
+  const email = document.getElementById('inEmail').value.trim();
+  const phone = document.getElementById('inPhone').value.trim();
+  const company = document.getElementById('s1Company') ?
+    document.getElementById('s1Company').value.trim() : '';
+  const postal = document.getElementById('inPostal') ?
+    document.getElementById('inPostal').value.trim() : '';
+
+  if (!name || !email || !phone) {
+    alert('Please fill in your name, email and phone number');
+    return;
+  }
+
+  try {
+    const { data, error } = await _sb
+      .from('brokers')
+      .insert([{
+        full_name: name,
+        email: email,
+        phone: phone,
+        company: company,
+        postal_code: postal,
+        insurance_type: selectedPsgOption || 'All Types',
+        status: 'active'
+      }]);
+
+    if (error) throw error;
+
+    // Update dashboard with their name
+    const initials = name.split(' ')
+      .map(n => n[0]).join('').toUpperCase().slice(0,2);
     document.getElementById('dashAv').textContent = initials;
     document.getElementById('dashNm').textContent = name;
-    document.getElementById('dashGreet').textContent = 'Welcome to Canvassing.ca, ' + name.split(' ')[0] + ' 🍁';
+    document.getElementById('dashGreet').textContent =
+      'Welcome to Canvassing.ca, ' + name.split(' ')[0] + ' 🍁';
+    document.getElementById('dashInfo').textContent =
+      'Insurance Broker · ' + (postal || 'Ontario') + ' · 🍁 Free Plan';
+
     showView('dashboard');
+
+  } catch (error) {
+    if (error.message && error.message.includes('duplicate')) {
+      alert('An account with this email already exists. Please log in.');
+    } else {
+      alert('Signup failed: ' + error.message);
+    }
   }
+}
 
   // DASHBOARD
   function setDnl(btn) {
