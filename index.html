@@ -176,7 +176,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,0.97);backdrop
 .quality{padding:100px 60px;background:var(--white);}
 .quality-inner{max-width:1200px;margin:0 auto;}
 .quality-header{text-align:center;margin-bottom:72px;}
-.process-timeline{display:grid;grid-template-columns:repeat(4,1fr);position:relative;margin-bottom:72px;}
+.process-timeline{display:grid;grid-template-columns:repeat(3,1fr);position:relative;margin-bottom:72px;}
 .process-timeline::before{content:'';position:absolute;top:27px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--red),rgba(208,26,26,0.15));z-index:0;}
 .process-step{text-align:center;padding:0 20px;position:relative;z-index:1;}
 .ps-num{width:56px;height:56px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:white;border:3px solid var(--white);box-shadow:0 0 0 2px var(--red);transition:transform 0.3s;}
@@ -438,6 +438,85 @@ footer{background:var(--black);padding:56px 60px 32px;}
   /* COMPLIANCE BAR */
   div[style*="padding:16px 60px"]{padding:16px 18px!important;}
 }
+
+/* ═══ ANIMATIONS ═══ */
+
+/* Floating shapes background */
+.hero-shapes { position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+.shape { position:absolute; border-radius:50%; opacity:0.06; animation:shapeFloat linear infinite; }
+.shape-1 { width:300px; height:300px; background:var(--red); top:-80px; right:10%; animation-duration:18s; animation-delay:0s; }
+.shape-2 { width:180px; height:180px; background:var(--red); bottom:10%; left:5%; animation-duration:14s; animation-delay:-4s; }
+.shape-3 { width:120px; height:120px; background:var(--red); top:40%; right:5%; animation-duration:20s; animation-delay:-8s; }
+@keyframes shapeFloat { 0%,100%{transform:translateY(0) scale(1);} 33%{transform:translateY(-30px) scale(1.05);} 66%{transform:translateY(15px) scale(0.97);} }
+
+/* Hero text typing cursor */
+.cursor { display:inline-block; width:3px; height:0.85em; background:var(--red); margin-left:2px; vertical-align:middle; animation:blink 0.9s infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+/* Stat counter cards */
+.stat-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1200px; margin:0 auto; padding:60px 60px 0; }
+.stat-card { background:var(--white); border:1.5px solid var(--border); border-radius:16px; padding:28px 24px; text-align:center; transition:all 0.25s; position:relative; overflow:hidden; }
+.stat-card::before { content:''; position:absolute; inset:0; background:var(--red-light); opacity:0; transition:opacity 0.25s; }
+.stat-card:hover { border-color:var(--red); transform:translateY(-4px); box-shadow:var(--shadow); }
+.stat-card:hover::before { opacity:1; }
+.stat-card-inner { position:relative; z-index:1; }
+.stat-card-num { font-family:'Fraunces',serif; font-size:48px; font-weight:900; color:var(--black); line-height:1; margin-bottom:8px; letter-spacing:-1px; }
+.stat-card-num .red { color:var(--red); }
+.stat-card-label { font-size:13px; color:var(--text-muted); font-weight:600; line-height:1.4; }
+
+/* Animated appointment card rows */
+.ac-appt { animation:apptIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes apptIn { from{opacity:0;transform:translateX(20px) scale(0.97);}to{opacity:1;transform:translateX(0) scale(1);} }
+
+/* Step number hover pop */
+.hiw-step:hover .step-num-large { color:var(--red-light); transform:scale(1.05); transition:all 0.3s; }
+
+/* Process step pulse */
+.ps-num { animation:none; }
+.process-step:hover .ps-num { animation:popBounce 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes popBounce { 0%{transform:scale(1);}50%{transform:scale(1.2);}100%{transform:scale(1.1);} }
+
+/* Testi card shimmer on hover */
+.testi-card { position:relative; overflow:hidden; }
+.testi-card::after { content:''; position:absolute; top:0; left:-100%; width:60%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent); transform:skewX(-15deg); transition:none; }
+.testi-card:hover::after { animation:shimmer 0.6s ease; }
+@keyframes shimmer { 0%{left:-100%;}100%{left:150%;} }
+
+/* FAQ smooth open indicator */
+.faq-item { position:relative; }
+.faq-item.open { border-color:var(--red); }
+.faq-item.open .faq-q { color:var(--red); }
+
+/* Why card number animate */
+.why-card:hover .why-num { color:var(--red-light); transition:color 0.3s; }
+
+/* CTA button pulse */
+.btn-red { position:relative; overflow:hidden; }
+.btn-red::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0.15); transform:scale(0); border-radius:inherit; transition:transform 0.4s; }
+.btn-red:active::after { transform:scale(1); opacity:0; }
+
+/* Report card number count animation */
+.report-stat-num.animated { animation:countPop 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes countPop { 0%{transform:scale(0.8);}60%{transform:scale(1.15);}100%{transform:scale(1);} }
+
+/* City chip hover */
+.city-chip { transition:all 0.2s; cursor:default; }
+.city-chip:hover { background:var(--red-light); border-color:rgba(208,26,26,0.3); color:var(--red); transform:translateY(-2px); box-shadow:var(--shadow); }
+
+/* Mobile CTA sticky bar */
+.mobile-cta-bar { display:none; position:fixed; bottom:0; left:0; right:0; padding:14px 18px; background:var(--white); border-top:1px solid var(--border); z-index:150; box-shadow:0 -4px 20px rgba(0,0,0,0.1); }
+.mobile-cta-bar .btn { width:100%; justify-content:center; font-size:16px; padding:16px; }
+
+/* Responsive stat cards */
+@media(max-width:1024px) { .stat-cards{grid-template-columns:repeat(3,1fr);padding:48px 32px 0;} }
+@media(max-width:640px) {
+  .stat-cards{grid-template-columns:repeat(2,1fr);gap:12px;padding:32px 18px 0;}
+  .stat-card{padding:20px 16px;}
+  .stat-card-num{font-size:36px;}
+  .stat-card-label{font-size:12px;}
+  .mobile-cta-bar{display:block;}
+  body{padding-bottom:72px;}
+}
 </style>
 </head>
 <body>
@@ -479,6 +558,7 @@ footer{background:var(--black);padding:56px 60px 32px;}
 <section class="hero">
   <div class="hero-bg"></div>
   <canvas class="hero-canvas" id="particleCanvas"></canvas>
+  <div class="hero-shapes"><div class="shape shape-1"></div><div class="shape shape-2"></div><div class="shape shape-3"></div></div>
   <div class="hero-inner">
     <div>
       <div class="hero-eyebrow">🏡 Home Evaluation Appointment Booking — Ontario</div>
@@ -533,6 +613,30 @@ footer{background:var(--black);padding:56px 60px 32px;}
   </div>
 </section>
 
+<!-- STAT CARDS -->
+<div class="stat-cards">
+  <div class="stat-card reveal delay-1">
+    <div class="stat-card-inner">
+      <div class="stat-card-num"><span class="js-count" data-target="0" data-prefix="$">$0</span></div>
+      <div class="stat-card-label">Charge for no-shows — pay for kept appointments only</div>
+    </div>
+  </div>
+  <div class="stat-card reveal delay-2">
+    <div class="stat-card-inner">
+      <div class="stat-card-num"><span class="red">100</span>%</div>
+      <div class="stat-card-label">Exclusive territory — one agent per postal code</div>
+    </div>
+  </div>
+  <div class="stat-card reveal delay-4">
+    <div class="stat-card-inner">
+      <div class="stat-card-num"><span class="js-count" data-target="90" data-suffix="K+">90K+</span></div>
+      <div class="stat-card-label">Registered real estate agents in Ontario</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="hiw">
   <div class="hiw-inner">
     <div class="hiw-header">
       <div class="reveal-left">
@@ -550,7 +654,7 @@ footer{background:var(--black);padding:56px 60px 32px;}
       <div class="hiw-step reveal delay-2"><div class="step-num-large">02</div><h3>We Train &amp; Deploy Canvassers</h3><p>We assign trained canvassers who are briefed on your name, your brokerage, and your script. They represent you professionally at every door — introducing you to your neighbourhood before you've even knocked.</p></div>
       <div class="hiw-step reveal delay-3"><div class="step-num-large">03</div><h3>Appointments Land in Your Calendar</h3><p>When a homeowner agrees to a meeting, the canvasser books it directly. You receive an instant notification with the homeowner's name, address, appointment type, and any notes captured at the door.</p></div>
       <div class="hiw-step reveal delay-4"><div class="step-num-large">04</div><h3>End-of-Day Report</h3><p>Every evening you receive a full report — how many doors were knocked, how many conversations were had, how many appointments were booked, and which streets were covered. Complete transparency, every day.</p></div>
-      <div class="hiw-step reveal delay-5" style="grid-column:1/-1"><div class="step-num-large">05</div><h3>You Show Up and List</h3><p>The homeowner is expecting you. The conversation has already been started. You walk in warmer than any cold call, any digital lead, or any open house follow-up. Close the listing and we'll book you ten more.</p></div>
+      <div class="hiw-step reveal delay-5" style="grid-column:1/-1;background:var(--red);border-color:var(--red);"><div class="step-num-large" style="color:rgba(255,255,255,0.2)">05</div><h3 style="color:white">You Show Up and List</h3><p style="color:rgba(255,255,255,0.8)">The homeowner is expecting you. The conversation has already been started. You walk in warmer than any cold call, any digital lead, or any open house follow-up. Close the listing and we'll book you ten more.</p></div>
     </div>
   </div>
 </section>
@@ -558,7 +662,7 @@ footer{background:var(--black);padding:56px 60px 32px;}
 <!-- PHOTO FEATURE — CANVASSERS -->
 <div class="photo-feature">
   <div class="pf-image">
-    <img src="https://images.unsplash.com/photo-1556157382-97eda2f9e2bf?w=900&q=80" alt="Professional canvasser">
+    <img src="image-3.jpg" alt="Professional canvasser knocking door">
     <div class="pf-overlay"></div>
   </div>
   <div class="pf-content reveal-right">
@@ -866,6 +970,11 @@ footer{background:var(--black);padding:56px 60px 32px;}
   </div>
 </footer>
 
+  <!-- MOBILE STICKY CTA -->
+  <div class="mobile-cta-bar" id="mobileCta">
+    <button class="btn btn-red" onclick="showView('contact')">Get Your First Appointments →</button>
+  </div>
+
   <!-- COMPLIANCE FOOTER BAR -->
   <div style="background:var(--offwhite);border-top:1px solid var(--border);padding:16px 60px;text-align:center">
     <p style="font-size:12px;color:var(--text-muted);line-height:1.7;max-width:900px;margin:0 auto">
@@ -922,10 +1031,7 @@ footer{background:var(--black);padding:56px 60px 32px;}
                 </select>
               </div>
               <div class="fg"><label>Anything else we should know</label><textarea placeholder="Your farm area, your preferred meeting style (in-person or call), any specific seller types you're targeting..."></textarea></div>
-              <div id="formspree-note" style="background:var(--red-light);border:1px solid rgba(208,26,26,0.2);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:13px;color:var(--red);line-height:1.6">
-  <strong>Connect your form:</strong> Replace <code style="background:rgba(208,26,26,0.1);padding:2px 6px;border-radius:4px;font-size:12px">YOUR_FORMSPREE_ID</code> in the form action below with your Formspree endpoint to receive submissions by email.
-</div>
-<button class="btn-submit" onclick="submitFormspree()">Send My Request →</button>
+              <button class="btn-submit" onclick="submitFormspree()">Send My Request →</button>
             </div>
 
             <div>
@@ -1026,6 +1132,46 @@ const revealObs = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el => revealObs.observe(el));
 
 // ═══ COUNTER ANIMATION ═══
+// Stat cards counter
+const cardCounterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.js-count').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      const suffix = el.dataset.suffix || '';
+      const prefix = el.dataset.prefix || '';
+      if (target === 0) { el.textContent = prefix + '0' + suffix; return; }
+      const dur = 1400;
+      const start = performance.now();
+      function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = prefix + Math.round(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+        else {
+          el.closest('.stat-card-num').classList.add('animated');
+          setTimeout(() => el.closest('.stat-card-num')?.classList.remove('animated'), 600);
+        }
+      }
+      requestAnimationFrame(tick);
+    });
+    cardCounterObs.unobserve(e.target);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-cards').forEach(el => cardCounterObs.observe(el));
+
+// Hide mobile CTA when contact form is visible
+const mobileCta = document.getElementById('mobileCta');
+if (mobileCta) {
+  const ctaObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (mobileCta) mobileCta.style.opacity = e.isIntersecting ? '0' : '1';
+      if (mobileCta) mobileCta.style.pointerEvents = e.isIntersecting ? 'none' : 'all';
+    });
+  }, { threshold: 0.3 });
+  const mainCta = document.querySelector('.cta-section');
+  if (mainCta) ctaObs.observe(mainCta);
+}
 function animateCounter(el) {
   const target = parseInt(el.dataset.target);
   const suffix = el.dataset.suffix || '';
